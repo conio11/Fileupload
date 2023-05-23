@@ -10,9 +10,10 @@
 	// 세션 유효성 확인 후 요청값 유효성 확인
 	
 	// 세션 유효성 확인
-	// 세션 없을 경우 로그인 폼으로 이동
+	// 세션 있을 경우 boardList.jsp로 이동
+	String msg = "";
 	if (session.getAttribute("loginMemberID") != null) {
-		response.sendRedirect(request.getContextPath() + "/login.jsp");
+		response.sendRedirect(request.getContextPath() + "/boardList.jsp");
 		return; // 실행 종료
 	}
 	
@@ -22,7 +23,8 @@
 	|| request.getParameter("memberID").equals("")
 	|| request.getParameter("memberPW") == null
 	|| request.getParameter("memberPW").equals("")) {
-		response.sendRedirect(request.getContextPath() + "/login.jsp");
+		msg = URLEncoder.encode("아이디, 비밀번호를 모두 입력해주세요.", "UTF-8");
+		response.sendRedirect(request.getContextPath() + "/login.jsp?msg=" + msg);
 		return;
 	}
 	
@@ -45,4 +47,23 @@
 	
 	String loginSql = "SELECT member_id memberID FROM member WHERE member_id=? AND member_pw=PASSWORD(?)";
 	PreparedStatement loginStmt = conn.prepareStatement(loginSql);
+	loginStmt.setString(1, memberID);
+	loginStmt.setString(2, memberPW);
+	System.out.println(loginStmt + " <-- loginStmt(loginAction)");
+	
+	ResultSet loginRs = loginStmt.executeQuery();
+	if (loginRs.next()) { // 로그인 성공
+		session.setAttribute("loginMemberID", loginRs.getString("memberID"));
+		System.out.println("로그인 성공 / 세션 정보 : " + session.getAttribute("loginMemberID"));
+		msg = URLEncoder.encode((session.getAttribute("loginMemberID") + "님 환영합니다."), "UTF-8");
+		response.sendRedirect(request.getContextPath() + "/boardList.jsp?msg=" + msg);
+	} else {
+		System.out.println("로그인 실패");
+		msg = URLEncoder.encode("아이디, 비밀번호를 정확히 입력해주세요.", "UTF-8");
+		response.sendRedirect(request.getContextPath() + "/login.jsp?msg=" + msg);
+	}
+	
+	
+	
+	System.out.println("==============================");
 %>

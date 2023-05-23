@@ -31,8 +31,8 @@
 				</tr>
 				<!-- 로그인 사용자 아이디 -->
 			<%
-				// String memberID = String(session.getAttribute("loginMemberID");
-				String memberID = "test";
+				String memberID = (String) session.getAttribute("loginMemberID");
+				// String memberID = "test";
 			%>
 				<tr>
 					<th class="table-warning text-center">memberID</th>

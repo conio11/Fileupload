@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*"%>
 <%@ page import="java.sql.*"%>
+<%@ page import="java.net.*"%>
 <%
 	// 요청값 유효성 검사
 	// boardNo, boardFileNo의 값 중 하나라도 공백 또는 null이면 boardList.jsp로 이동
@@ -76,6 +77,12 @@
   		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	</head>
 	<body>
+		<%
+			if (session.getAttribute("loginMemberID") == null) { // 로그인 상태가 아니면 파일(게시글) 수정, 삭제 불가
+				String msg = URLEncoder.encode("로그인 후 이용 가능합니다.", "UTF-8");
+				response.sendRedirect(request.getContextPath() + "/login.jsp?msg=" + msg);
+			}
+		%>
 		<a href="<%=request.getContextPath()%>/boardList.jsp" class="btn btn-outline-warning">목록으로</a>
 		<div class="text-center">
 			<h1>board 삭제</h1>

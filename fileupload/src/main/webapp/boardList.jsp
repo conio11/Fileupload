@@ -42,7 +42,6 @@
 		list.add(m);
 	}
 
-	
 	System.out.println("================================");
 %>
 
@@ -56,9 +55,28 @@
   		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	</head>
 	<body>
+		<%
+			if (session.getAttribute("loginMemberID") == null) { // 로그인 상태에서는 보이지 않음
+		%>
+				<a href="<%=request.getContextPath()%>/login.jsp" class="btn btn-outline-warning">로그인</a>
+		<%		
+			}
+		%>
+		
 		<div class="text-center">
 			<h1>PDF 자료 목록</h1>
 		</div>
+		
+		<%
+			if (session.getAttribute("loginMemberID") != null) {
+		%>
+			<div>
+				<h5>현재 로그인 아이디: <%=session.getAttribute("loginMemberID")%></h5>
+			</div>
+		<%		
+			}
+		%>
+		
 		<%
 			if (request.getParameter("msg") != null) {
 		%>
@@ -75,6 +93,7 @@
 			}
 		%> 
 		<br>
+		
 		<table class="table">
 			<tr class="table-warning text-center">
 				<th>boardTitle</th>
@@ -99,6 +118,14 @@
 			}
 		%>
 		</table>
-		<a href="<%=request.getContextPath()%>/addBoard.jsp" class="btn btn-outline-warning">새 자료 업로드</a>
+		<%
+			if (session.getAttribute("loginMemberID") != null) { // 로그인 상태가 아니면 보이지 않음
+		%>
+				<a href="<%=request.getContextPath()%>/addBoard.jsp" class="btn btn-outline-warning">새 자료 업로드</a>
+				<a href="<%=request.getContextPath()%>/logoutAction.jsp" class="btn btn-outline-warning">로그아웃</a>	
+		<%		
+			}
+		%>
+		
 	</body>
 </html>

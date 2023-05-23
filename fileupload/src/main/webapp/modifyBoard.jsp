@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*"%>
 <%@ page import="java.sql.*"%>
+<%@ page import="java.net.*"%>
     
 <%
  	// post 방식 인코딩 설정
@@ -79,6 +80,12 @@
 		</style> -->
 	</head>
 	<body>
+		<%
+			if (session.getAttribute("loginMemberID") == null) { // 로그인 상태가 아니면 파일(게시글) 수정, 삭제 불가
+				String msg = URLEncoder.encode("로그인 후 이용 가능합니다.", "UTF-8");
+				response.sendRedirect(request.getContextPath() + "/login.jsp?msg=" + msg);
+			}
+		%>
 		<a href="<%=request.getContextPath()%>/boardList.jsp" class="btn btn-outline-warning">목록으로</a>
 		<div class="text-center">
 			<h1>boardTitle & boardFile 수정</h1>
