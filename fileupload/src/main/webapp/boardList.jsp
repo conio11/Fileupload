@@ -4,6 +4,22 @@
 <%@ page import="java.sql.*"%>
 
 <%
+	// post 방식 인코딩 설정
+	// request.setCharacterEncoding("UTF-8");
+
+	// 페이징
+	int currentPage = 1;
+	if (request.getParameter("currentPage") != null) {
+		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	}
+	System.out.println(currentPage + " <-- currentPage(boardList)");
+	
+	// 한 페이지에 출력되는 행의 수
+	// ... LIMIT startRow, rowPerPage (0, 10), (10, 10), ...
+	int rowPerPage = 10;
+	int startRow = (currentPage - 1) * rowPerPage;
+	System.out.println(startRow + " <-- startRow(boardList)");
+
 	//DB 연결
 	String driver = "org.mariadb.jdbc.Driver";
 	String dbUrl = "jdbc:mariadb://127.0.0.1:3306/fileupload";
@@ -41,7 +57,25 @@
 		m.put("path", rs.getString("path"));
 		list.add(m);
 	}
-
+	
+	// board의 전체 행의 수, 마지막 페이지
+	String pageSql = "SELECT COUNT(*) FROM board";
+	PreparedStatement pageStmt = conn.prepareStatement(pageSql);
+	ResultSet pageRs = pageStmt.executeQuery();
+	int totalRow = 0;
+	if (pageRs.next()) {
+		totalRow = pageRs.getInt(1); // COUNT(*) 대신 인덱스 사용 가능 (구하는 행이 1개)
+	}
+	
+	int lastPage = totalRow / rowPerPage;
+	if (totalRow % rowPerPage != 0) {
+		lastPage += 1;
+	}
+	
+	// 디버깅
+	System.out.println(totalRow + " <-- totalRow(boardList)");
+	System.out.println(lastPage + " <-- lastPage(boardList)");
+	
 	System.out.println("================================");
 %>
 
@@ -118,6 +152,34 @@
 			}
 		%>
 		</table>
+		
+		<%
+			// 테이블 하단 페이징
+			// [이전] 1 2 3 4 5... [다음]
+			int pagePerPage = 5;
+		
+			// minPage: [이전] [다음] 탭 사이 가장 작은 숫자
+			// maxPage: [이전] [다음] 탭 사이 가장 큰 숫자
+			int minPage = ((currentPage - 1) / pagePerPage) * pagePerPage + 1; 
+			int maxPage = minPage + (pagePerPage - 1);
+			// 1, 6, 11, 16, ...
+			// 5, 10, 15
+			if (maxPage > lastPage) {
+				maxPage = lastPage;
+			}
+					
+		%>
+		
+		<%
+			if (minPage > 1) { // 현재 페이지의 minPage가 1보다 크면 (5, 11, ...) 이전 버튼 생성
+		%>
+
+		<%
+			}
+		%>		
+		
+		
+		
 		<%
 			if (session.getAttribute("loginMemberID") != null) { // 로그인 상태가 아니면 보이지 않음
 		%>
