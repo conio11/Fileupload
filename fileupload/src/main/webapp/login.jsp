@@ -15,7 +15,7 @@
 	</head>
 	<body>
 	<%
-		if (session.getAttribute("loginMember") == null) { // 로그인 상태가 아닐 경우에만 로그인폼 출력
+		if (session.getAttribute("loginMemberID") == null) { // 로그인 상태가 아닐 경우에만 로그인폼 출력
 	%>
 	
 			<form action="<%=request.getContextPath()%>/loginAction.jsp" method="post">
