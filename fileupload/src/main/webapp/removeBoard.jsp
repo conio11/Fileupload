@@ -77,6 +77,7 @@
   		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	</head>
 	<body>
+		<div class="container mt-3">
 		<%
 			if (session.getAttribute("loginMemberID") == null) { // 로그인 상태가 아니면 파일(게시글) 수정, 삭제 불가
 				String msg = URLEncoder.encode("로그인 후 이용 가능합니다.", "UTF-8");
@@ -95,18 +96,19 @@
 				<tr>
 					<th class="table-warning text-center">boardTitle</th>
 					<td>
-						<textarea rows="3" cols="50" name="boardTitle" readonly="readonly" class="form-control"><%=map.get("boardTitle")%></textarea> 
+						<textarea rows="3" cols="50" name="boardTitle" readonly="readonly" class="form-control w-75"><%=map.get("boardTitle")%></textarea> 
 					</td>
 				</tr>
 				<tr>
 					<th class="table-warning text-center">boardFile</th>
 					<td>
-						<input type="text" name="originFilename" value="<%=map.get("originFilename")%>" readonly="readonly" class="form-control">
+						<input type="text" name="originFilename" value="<%=map.get("originFilename")%>" readonly="readonly" class="form-control w-75">
 					</td>
 				</tr>
 			
 			</table>
 			<button type="submit" class="btn btn-outline-warning">삭제</button>
 		</form>
+		</div>
 	</body>
 </html>

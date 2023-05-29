@@ -3,6 +3,8 @@
 <%
 	// post 방식 인코딩 설정
 	request.setCharacterEncoding("UTF-8");
+
+	System.out.println("==========login==========");
 %>
 <!DOCTYPE html>
 	<html>
@@ -14,6 +16,7 @@
   		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	</head>
 	<body>
+		<div class="container mt-3">
 	<%
 		if (session.getAttribute("loginMemberID") == null) { // 로그인 상태가 아닐 경우에만 로그인폼 출력
 	%>
@@ -33,11 +36,11 @@
 				<table class="table">	
 					<tr>
 						<th class="table-warning text-center">아이디</th>
-						<td><input type="text" name="memberID" class="form-control" placeholder="아이디를 입력하세요."></td>
+						<td><input type="text" name="memberID" class="form-control w-75" placeholder="아이디를 입력하세요."></td>
 					</tr>
 					<tr>
 						<th class="table-warning text-center">비밀번호</th>
-						<td><input type="password" name="memberPW" class="form-control" placeholder="비밀번호를 입력하세요."></td>
+						<td><input type="password" name="memberPW" class="form-control w-75" placeholder="비밀번호를 입력하세요."></td>
 					</tr>
 				</table>
 				<button type="submit" class="btn btn-outline-warning">로그인</button>
@@ -48,5 +51,6 @@
 		}
 	%>
 		</form>
+		</div>
 	</body>
 </html>

@@ -5,7 +5,7 @@
 
 <%
 	// post 방식 인코딩 설정
-	// request.setCharacterEncoding("UTF-8");
+	request.setCharacterEncoding("UTF-8");
 
 	// 페이징
 	int currentPage = 1;
@@ -72,11 +72,31 @@
 		lastPage += 1;
 	}
 	
+	// 테이블 하단 페이징
+	// [이전] 1 2 3 4 5... [다음]
+	int pagePerPage = 5;
+	
 	// 디버깅
 	System.out.println(totalRow + " <-- totalRow(boardList)");
 	System.out.println(lastPage + " <-- lastPage(boardList)");
+
+	// minPage: [이전] [다음] 탭 사이 가장 작은 숫자
+	// maxPage: [이전] [다음] 탭 사이 가장 큰 숫자
+	int minPage = ((currentPage - 1) / pagePerPage) * pagePerPage + 1; 
+	int maxPage = minPage + (pagePerPage - 1);
+	// 1, 6, 11, 16, ...
+	// 5, 10, 15
+	if (maxPage > lastPage) {
+		maxPage = lastPage;
+	}
 	
-	System.out.println("================================");
+	// 디버깅
+	System.out.println(minPage + " <-- minPage(boardList)");
+	System.out.println(maxPage + " <-- mixPage(boardList)");
+	
+
+	
+	System.out.println("==========boardList==========");
 %>
 
 <!DOCTYPE html>
@@ -89,6 +109,7 @@
   		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	</head>
 	<body>
+		<div class="container mt-3">
 		<%
 			if (session.getAttribute("loginMemberID") == null) { // 로그인 상태에서는 보이지 않음
 		%>
@@ -154,19 +175,7 @@
 		</table>
 		
 		<%
-			// 테이블 하단 페이징
-			// [이전] 1 2 3 4 5... [다음]
-			int pagePerPage = 5;
-		
-			// minPage: [이전] [다음] 탭 사이 가장 작은 숫자
-			// maxPage: [이전] [다음] 탭 사이 가장 큰 숫자
-			int minPage = ((currentPage - 1) / pagePerPage) * pagePerPage + 1; 
-			int maxPage = minPage + (pagePerPage - 1);
-			// 1, 6, 11, 16, ...
-			// 5, 10, 15
-			if (maxPage > lastPage) {
-				maxPage = lastPage;
-			}
+
 					
 		%>
 		
@@ -188,6 +197,6 @@
 		<%		
 			}
 		%>
-		
+		</div>
 	</body>
 </html>

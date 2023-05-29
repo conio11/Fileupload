@@ -4,6 +4,8 @@
 <%
 	session.invalidate(); // 기존 세션 삭제 후 갱신
 	String msg = URLEncoder.encode("로그아웃 되었습니다.", "UTF-8");
+	System.out.println("로그아웃 완료");
+	System.out.println("==========logoutAction==========");
 	
 	response.sendRedirect(request.getContextPath() + "/boardList.jsp?msg=" + msg);
 %>

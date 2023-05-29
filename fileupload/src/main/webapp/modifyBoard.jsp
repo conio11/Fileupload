@@ -6,7 +6,7 @@
     
 <%
  	// post 방식 인코딩 설정
- 	// request.setCharacterEncoding("UTF-8");
+ 	request.setCharacterEncoding("UTF-8");
 
 	// 요청값 유효성 검사
 	// boardNo, boardFileNo의 값 중 하나라도 공백 또는 null이면 boardList.jsp로 이동
@@ -23,7 +23,6 @@
 
 	System.out.println(boardNo + " <-- boardNo(modifyBoard)");
 	System.out.println(boardFileNo + " <-- boardFileNo(modifyBoard)");
-	
 	
 	// DB 연결
 	String driver = "org.mariadb.jdbc.Driver";
@@ -80,10 +79,12 @@
 		</style> -->
 	</head>
 	<body>
+		<div class="container mt-3">
 		<%
 			if (session.getAttribute("loginMemberID") == null) { // 로그인 상태가 아니면 파일(게시글) 수정, 삭제 불가
 				String msg = URLEncoder.encode("로그인 후 이용 가능합니다.", "UTF-8");
 				response.sendRedirect(request.getContextPath() + "/login.jsp?msg=" + msg);
+				return;
 			}
 		%>
 		<a href="<%=request.getContextPath()%>/boardList.jsp" class="btn btn-outline-warning">목록으로</a>
@@ -99,17 +100,18 @@
 				<tr>
 					<th class="table-warning text-center">boardTitle</th>
 					<td>
-						<textarea rows="3" cols="50" name="boardTitle" required="required" class="form-control"><%=map.get("boardTitle")%></textarea>
+						<textarea rows="3" cols="50" name="boardTitle" required="required" class="form-control w-75"><%=map.get("boardTitle")%></textarea>
 					</td>
 				</tr>
 				<tr>
 					<th class="table-warning text-center">boardFile (수정 전 파일 : <%=map.get("originFilename")%>)</th>
 					<td>
-						<input type="file" name="boardFile" required="required" class="form-control">
+						<input type="file" name="boardFile" required="required" class="form-control w-75">
 					</td>
 				</tr>
 			</table>
 			<button type="submit" class="btn btn-outline-warning">수정</button>
 		</form>
+		</div>
 	</body>
 </html>

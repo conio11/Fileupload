@@ -16,6 +16,7 @@
 		</style> -->
 	</head>
 	<body>
+		<div class="container mt-3">
 		<a href="<%=request.getContextPath()%>/boardList.jsp" class="btn btn-outline-warning">목록으로</a>
 		<div class="text-center">
 			<h1>자료 업로드</h1>
@@ -26,7 +27,7 @@
 				<tr>
 					<th class="table-warning text-center">boardTitle</th>
 					<td>
-						<textarea rows="3" cols="50" name="boardTitle" required="required" class="form-control"></textarea> <!-- required: null값 submit 시 경고창 출력 -->
+						<textarea rows="3" cols="50" name="boardTitle" required="required" class="form-control w-75"></textarea> <!-- required: null값 submit 시 경고창 출력 -->
 					</td>
 				</tr>
 				<!-- 로그인 사용자 아이디 -->
@@ -37,17 +38,18 @@
 				<tr>
 					<th class="table-warning text-center">memberID</th>
 					<td>
-						<input type="text" name="memberID" value="<%=memberID%>" readonly="readonly" class="form-control">
+						<input type="text" name="memberID" value="<%=memberID%>" readonly="readonly" class="form-control w-75">
 					</td>
 				</tr>
 				<tr>
 					<th class="table-warning text-center">boardFile</th>
 					<td>
-						<input type="file" name="boardFile" required="required" class="form-control"> <!-- multiple="multiple": 복수 선택 가능  --> <!-- required: null값 submit 시 경고창 출력 -->
+						<input type="file" name="boardFile" required="required" class="form-control w-75"> <!-- multiple="multiple": 복수 선택 가능  --> <!-- required: null값 submit 시 경고창 출력 -->
 					</td>
 				</tr>
 			</table>
 			<button type="submit" class="btn btn-outline-warning">업로드</button>
 		</form>
+		</div>
 	</body>
 </html>
