@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.net.*"%>
+
+<%
+	// post 방식 인코딩 처리
+	request.setCharacterEncoding("UTF-8");
+%>
 
 <!DOCTYPE html>
 <html>
@@ -17,10 +23,24 @@
 	</head>
 	<body>
 		<div class="container mt-3">
+		<%
+			if (session.getAttribute("loginMemberID") == null) { // 로그인 상태가 아니면 파일 업로드 불가
+				String msg = URLEncoder.encode("로그인 후 이용 가능합니다.", "UTF-8");
+				response.sendRedirect(request.getContextPath() + "/login.jsp?msg=" + msg);
+				return;
+			}
+		%>
 		<a href="<%=request.getContextPath()%>/boardList.jsp" class="btn btn-outline-warning">목록으로</a>
 		<div class="text-center">
 			<h1>자료 업로드</h1>
 		</div>
+		<%
+			if (request.getParameter("msg") != null) {
+		%>
+				<%=request.getParameter("msg")%>
+		<%
+			}
+		%>
 		<form action="<%=request.getContextPath()%>/addBoardAction.jsp" method="post" enctype="multipart/form-data">
 			<table class="table">
 				<!-- 자료 업로드 글 제목  -->

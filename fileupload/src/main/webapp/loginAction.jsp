@@ -63,7 +63,5 @@
 		response.sendRedirect(request.getContextPath() + "/login.jsp?msg=" + msg);
 	}
 	
-	
-	
-	System.out.println("==============================");
+	System.out.println("===============loginAction===============");
 %>

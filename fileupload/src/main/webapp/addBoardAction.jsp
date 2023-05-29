@@ -24,16 +24,18 @@
 	
 	// MultipartRequest API를 사용하여 스트림 내에서 문자값을 반환받을 수 있음
 	
-	// 업로드 파일이 pdf 파일이 아니면
-	if (mRequest.getContentType("boardFile").equals("application/pdf") == false) {
+	String msg = "";
+	if (mRequest.getContentType("boardFile").equals("application/pdf") == false) { // 업로드 파일이 pdf 파일이 아니면
 		// 위에서 저장된 파일을 삭제
 		System.out.println("PDF 파일이 아닙니다.");
-		String saveFilename = mRequest.getFilesystemName("boardFile");
+		String saveFilename = mRequest.getFilesystemName("boardFile"); // 실제 저장된 파일 이름 가져오기
 		File f = new File(dir + "\\" + saveFilename); // 경로(dir) 없으면 파일 찾을 수 없음
 		if (f.exists()) {
 			f.delete();
 			System.out.println(saveFilename + " 파일 삭제");
 		}
+		msg = URLEncoder.encode("PDF 파일을 업로드해주세요.", "UTF-8");
+		response.sendRedirect(request.getContextPath() + "/addBoard.jsp?msg=" + msg);
 		return; // 실행 종료
 	}
 
@@ -50,7 +52,7 @@
 	
 	// 2) input type="file" 값(파일 메타 정보) 반환 API (원본 파일 이름, 저장된 파일 이름, 컨텐츠 타입)
 	// -> board_file 테이블 저장
-	// 파일(바이너리)은 이미 MultipartRequest 객체 생성 시 (request 랩핑 시, 21라인) 먼저 저장
+	// 파일(바이너리)은 이미 MultipartRequest 객체 생성 시 (request 랩핑 시, 23라인) 먼저 저장
 	// .getFile().length() 파일의 크기 반환 (long 타입)
 	String type = mRequest.getContentType("boardFile"); // .getContentType(): 업로드된 파일의 타입 반환
 	String originFilename = mRequest.getOriginalFileName("boardFile"); // .getOriginalFileName(): 사용자가 업로드한 파일명 반환
@@ -95,11 +97,11 @@
 	System.out.println("DB 접속 성공(addBoardAction)");
 	
 	// PreparedStatement.RETURN_GENERATED_KEYS: PreparedStatement 객체를 사용하여 SQL 쿼리를 실행할 때, 자동으로 생성된 키(보통 AUTO_INCREMENT 열의 값)를 검색하기 위한 상수
-	String msg = "";
 	String boardSql = "INSERT INTO board(board_title, member_id, updatedate, createdate) VALUES (?, ?, NOW(), NOW())";
 	PreparedStatement boardStmt = conn.prepareStatement(boardSql, PreparedStatement.RETURN_GENERATED_KEYS); 
 	boardStmt.setString(1, boardTitle);
 	boardStmt.setString(2, memberID);
+	
 	int boardRow = boardStmt.executeUpdate(); // board 입력 후 키값 저장
 	System.out.println(boardRow + " <-- boardRow(addBoardAction)");
 	if (boardRow == 1) { // board에서 삭제 성공
@@ -111,7 +113,7 @@
 	}
 	
 	// String sql = "SELECT MAX(board_no) FROM board";
-	ResultSet keyRs = boardStmt.getGeneratedKeys();
+	ResultSet keyRs = boardStmt.getGeneratedKeys(); // 저장된 키값을 반환
 	int boardNo = 0;
 	if (keyRs.next()) {
 		boardNo = keyRs.getInt(1);
